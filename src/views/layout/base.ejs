@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('../partials/page-header') %>
+    <body class="rtl">
+        <div class="page-wrapper compact-wrapper" id="pageWrapper">
+            <%- include ('../partials/header')%>
+            <div class="">
+                <%- include(innerPage) %>
+                <%- include ('../partials/footer') %>
+            </div>
+            <%- include ('../partials/delete-confirm') %>
+        </div>
+    </body>
+</html>
