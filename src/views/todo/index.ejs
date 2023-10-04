@@ -3,12 +3,13 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="d-flex justify-content-between">
-                        <div class="card-header d-flex p-3">
-                        </div>
+                    <div class="d-flex justify-content-end">
                             <div class="p-3">
-                                <a class="btn btn-primary main-pg-btn btn-icon-text pull-right px-2" href="/blogs/create" role="button">
-                                <i class="fa fa-plus"> </i> Add New</a
+                                <button class="btn btn-primary main-pg-btn btn-icon-text pull-right px-2"  
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmAddModal">
+                                <i class="icofont-duotone icofont-plus-circle"> </i> Add New</button
                             >
                         </div>
                     </div>
@@ -24,25 +25,29 @@
                               </tr>
                             </thead>
                             <tbody>
-                                <% if(data.length > 0){ sn = (pageNum-1) * pageLimit; docs.forEach(function(info) { %>
+                                <% if(data.length > 0){ sn = (pageNum-1) * pageLimit; data.forEach(function(item, index) { %>
                                     <tr>
                                         <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
+                                        <td><%=item?.name ?? nil%></td>
+                                        <td><%=item?.description ?? nil%></td>
+                                        <td><%= item?.deadline ? formatDate(item?.deadline) : nil%></td>
                                         <td>
-                                            <a class="text-uppercase btn btn-light btn-sm p-1 me-2" href="/blogs/" role="button"> <i class="icofont-duotone icofont-apply"></i>
-                                            <%= 'Edit' %>
-                                            </a>
+                                            <button class="text-uppercase btn btn-light btn-sm p-1 me-2 edit-modal-form"  
+                                                type="button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmEditModal-<%=index%>">
+                                                <i class="icofont-duotone icofont-apply"> </i>Edit
+                                            </button>
+                                            <%- include ('./includes/edit-modal', {index, id: item?.id, name: item?.name, description: item?.description, deadline: formatDate(item?.deadline)}) %>
+
                                             <button type="button"
                                                     class="btn btn-danger btn-sm p-1"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#confirmDeleteModal"
-                                                    data-href="/blogs/?_method=delete"
-                                                    data-title="<%= 'Delete Category' %>"
-                                                    data-description=" <%= 'Are you sure you want to delete?' %>">
+                                                    data-bs-target="#confirmDeleteModal">
                                                 <i class="fa fa-trash"> </i>
                                                 <%= 'Delete' %>
                                             </button>
+                                            <%- include ('./includes/delete-modal', {id: item?.id}) %>
                                         </td>
                                     </tr>
                                 <%});}else{ %>
@@ -59,4 +64,7 @@
         </div>
     </div>
 </div>
+
+<%-include('./includes/add-modal')%>
+
 

@@ -4,6 +4,7 @@ import { Todo } from "../entities/todo.entity";
 import { TodoListInterface } from "../interfaces/todo.list.interface";
 import { Repository } from "typeorm";
 import { Pagination } from "../interfaces";
+import moment from 'moment';
 
 export class TodoService {
     private repository: Repository<Todo>;
@@ -17,6 +18,9 @@ export class TodoService {
         const [data, total] = await this.repository.findAndCount({
             skip,
             take: limit,
+            order: {
+                id: 'DESC'
+            },
         });
         let from = ((page - 1) * limit) + 1;
         let to = from + (data.length - 1);
@@ -26,13 +30,15 @@ export class TodoService {
             pageNum: page,
             pageLimit: limit,
             currentPage: page,
+            pageCount: Math.ceil(total/limit),
             from,
             to
         };
     }
 
     async add(data: CreateTodoDto){
-        const { name, description, deadline} = data;
+        let { name, description, deadline} = data;
+        deadline = moment(deadline, "YYYY-MM-DD").toDate();
         const newTodoData = this.repository.create({name, description, deadline});
         return this.repository.save(newTodoData);
     }
@@ -42,7 +48,7 @@ export class TodoService {
         const todoData = await this.findOrFail(id);
         todoData.name = name; 
         todoData.description = description;
-        todoData.deadline = deadline;
+        todoData.deadline = moment(deadline, "YYYY-MM-DD").toDate();
         return this.repository.save(todoData);
     }
 

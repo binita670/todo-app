@@ -8,6 +8,7 @@ export class TodoController {
     private viewPage = '../todo';
     private service: TodoService;
     private innerPage = '';
+    private url = '/todo'
 
     constructor() {
         this.service = new TodoService();
@@ -27,7 +28,8 @@ export class TodoController {
     viewData(data: TodoListInterface) {
         return {
           ...data,
-          innerPage: this.innerPage
+          innerPage: this.innerPage,
+          url: this.url
         };
     }
 }

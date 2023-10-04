@@ -8,4 +8,5 @@ export interface TodoListInterface {
     currentPage: number;
     from: number;
     to: number;
+    pageCount: number;
 }

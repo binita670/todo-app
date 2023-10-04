@@ -14,7 +14,8 @@
   },
   "nodemonConfig": {
     "watch": [
-      "./src/views"
+      "./src/views",
+      "./dist"
     ],
     "ext": "ejs",
     "events": {
@@ -27,10 +28,12 @@
     "config": "^3.3.9",
     "cors": "^2.8.5",
     "ejs": "^3.1.9",
+    "esbuild": "^0.19.4",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "http-status-code": "^2.1.0",
     "method-override": "^3.0.0",
+    "moment": "^2.29.4",
     "pg": "^8.11.3",
     "rimraf": "^5.0.5",
     "typeorm": "^0.3.17"

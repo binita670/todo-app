@@ -4,7 +4,11 @@ import { CreateTodoDto } from "../../dto";
 import { IdParam, TypedRequest } from "../../interfaces";
 
 export class TodoController {
-    private service = new TodoService();
+    private service: TodoService;
+
+    constructor() {
+        this.service = new TodoService();
+    }
 
     async add(req: TypedRequest<CreateTodoDto>, res: Response){
         try{
@@ -26,8 +30,8 @@ export class TodoController {
 
     async delete(req: Request, res: Response){
         try{
-            const data = await this.service.delete(req.params.id);
-            return res.status(204).send(data);
+            await this.service.delete(req.params.id);
+            return res.status(204).send("success");
         }catch(error: any){
             throw new Error(error);
         }
