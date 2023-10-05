@@ -26,7 +26,7 @@
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="todo-list">
                                 <% if(data.length > 0){ sn = (pageNum-1) * pageLimit; data.forEach(function(item, index) { %>
                                     <tr>
                                         <th><%= index + 1 %></th>
@@ -42,15 +42,15 @@
                                             <button class="text-uppercase btn btn-light btn-sm p-1 me-2 edit-modal-form"  
                                                 type="button"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#confirmEditModal-<%=index%>">
+                                                data-bs-target="#confirmEditModal-<%=item?.id%>">
                                                 <i class="icofont-duotone icofont-apply"> </i>Edit
                                             </button>
-                                            <%- include ('./includes/edit-modal', {index, id: item?.id, name: item?.name, description: item?.description, deadline: formatDate(item?.deadline)}) %>
+                                            <%- include ('./includes/edit-modal', {id: item?.id, name: item?.name, description: item?.description, deadline: formatDate(item?.deadline)}) %>
 
                                             <button type="button"
                                                     class="btn btn-danger btn-sm p-1"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#confirmDeleteModal">
+                                                    data-bs-target="#confirmDeleteModal-<%=item?.id%>">
                                                 <i class="fa fa-trash"> </i>
                                                 <%= 'Delete' %>
                                             </button>
@@ -64,7 +64,6 @@
                                 <% } %>
                             </tbody>
                         </table>
-                        <!-- <div class="mb-3"><%- include ('../partials/pagination')%></div> -->
                     </div>
                 </div>
             </div>

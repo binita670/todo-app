@@ -16,7 +16,7 @@ class ExpressLoader {
         app.use(async (req: Request, res: Response, next: NextFunction) => {
             res.locals.query = req.query;
             res.locals.url = req.url;
-            res.locals.formatDate = (dateTime: string) => moment(dateTime).format("YYYY/MM/DD HH:mm");
+            res.locals.formatDate = (dateTime: string) => moment(dateTime).format("MMM Do YYYY, h:mm:ss a");
             next();
         });
         routes(app);
