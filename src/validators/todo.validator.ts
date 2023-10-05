@@ -4,24 +4,27 @@ import { checkMaxLength, required } from "../helper";
 export const todoValidator = checkSchema({
     'name': {
         custom: {
-            options: (value) => {
+            options: (value: string) => {
                 required("Name", value);
                 checkMaxLength("Name", value);
+                return true;
             }
         }
     },
     'description': {
         custom: {
-            options: (value) => {
-                required("Name", value);
-                checkMaxLength("Name", value, 100);
+            options: (value: string) => {
+                required("Description", value);
+                checkMaxLength("Description", value, 100);
+                return true;
             }
         }
     },
     'deadline': {
         custom: {
-            options: (value) => {
-                required("Name", value);
+            options: (value: string) => {
+                required("Deadline", value);
+                return true;
             }
         }
     }

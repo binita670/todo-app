@@ -7,17 +7,20 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"tsc --watch\" \"nodemon ./dist/index.js\"",
     "clean:dist": "rimraf dist",
-    "typeorm": "cross-var ts-node --project ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "make:migration": "npm run typeorm migration:create ./database/migrations/$npm_config_name",
     "build": "tsc && npm run copy-views",
-    "copy-views": "copyfiles -u 1 ./src/views/**/* ./dist"
+    "copy-views": "copyfiles -u 1 ./src/views/**/* ./dist",
+    "typeorm": "cross-var node ./node_modules/typeorm/cli.js",
+    "migration:create": "npm run typeorm migration:create ./src/database/migrations/$npm_config_name",
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./src/database/database.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./src/database/database.ts",
+    "build:js": "node esbuild.config.js"
   },
   "nodemonConfig": {
     "watch": [
       "./src/views",
       "./dist"
     ],
-    "ext": "ejs",
+    "ext": "ejs,js",
     "events": {
       "restart": "copyfiles -u 1 ./src/views/**/* ./dist"
     }
@@ -36,6 +39,7 @@
     "moment": "^2.29.4",
     "pg": "^8.11.3",
     "rimraf": "^5.0.5",
+    "ts-node": "10.9.1",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
@@ -47,9 +51,7 @@
     "copyfiles": "^2.4.1",
     "cross-var": "^1.1.0",
     "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   }
 }

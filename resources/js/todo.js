@@ -1,13 +1,20 @@
-import { Error, Success } from './toast';
+import { toastError, toastSuccess } from './toast';
+
+const formatError = (error) => {
+    if(error.status === 422) {
+        return error.responseJSON.errors.map(err => err.msg).join('\n');
+    }
+    return error.message;
+}
 
 $(function(e) {
     $('#add-form').submit(function (e) {
         e.preventDefault();
-        const name = $('input[name="name"]').val();
-        const description = $('input[name="description"]').val();
-        const deadline = $('input[name="deadline"]').val();
+        const name = $('#add-form input[name="name"]').val();
+        const description = $('#add-form input[name="description"]').val();
+        const deadline = $('#add-form input[name="deadline"]').val();
         $.ajax({
-            url:'/api/v1/todo',
+            url:'/api/v1/todos',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -17,11 +24,10 @@ $(function(e) {
             }),
             success: (response) => {
                 console.log(response.data);
-                Success("Item added to Todo list successfully.");
+                toastSuccess("Item added to Todo list successfully.");
             },
             error: (error) => {
-                console.log(error);
-                Error(error)
+                toastError(formatError(error));
             }
         });
     });
@@ -33,7 +39,7 @@ $(function(e) {
         const description = $('input[name="description"]').val();
         const deadline = $('input[name="deadline"]').val();
         $.ajax({
-            url:`/api/v1/todo/${id}`,
+            url:`/api/v1/todos/${id}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -43,11 +49,10 @@ $(function(e) {
             }),
             success: (response) => {
                 console.log(response.data);
-                Success("Item edited successfully.");
+                toastSuccess("Item edited successfully.");
             },
             error: (error) => {
-                console.log(error);
-                Error(error)
+                toastError(formatError(error));
             }
         });
     });
@@ -56,15 +61,28 @@ $(function(e) {
         e.preventDefault();
         const id = $('input[name="id"]').val();
         $.ajax({
-            url:`/api/v1/todo/${id}`,
+            url:`/api/v1/todos/${id}`,
             type: 'DELETE',
             success: (response) => {
-                console.log(response);
-                Success("Item deleted successfully.");
+                toastSuccess("Item deleted successfully.");
             },
             error: (error) => {
-                console.log(error);
-                Error(error)
+                toastError(formatError(error));
+            }
+        });
+    });
+
+    $('.done-checkbox').on('click', function(e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        $.ajax({
+            url:`/api/v1/todos/change-status/${id}`,
+            type: 'PUT',
+            success: (response) => {
+                toastSuccess("Status changed successfully.");
+            },
+            error: (error) => {
+                toastError(formatError(error));
             }
         });
     });

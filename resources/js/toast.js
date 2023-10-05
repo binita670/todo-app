@@ -1,4 +1,4 @@
-export function Error(msg = "Something went wrong."){
+export function toastError(msg = "Something went wrong."){
     $.toast({
         heading: 'Error',
         text: msg,
@@ -8,7 +8,7 @@ export function Error(msg = "Something went wrong."){
     });
 }
 
-export function Warning(msg = "Something went wrong."){
+export function toastWarning(msg = "Something went wrong."){
     $.toast({
         heading: 'Warning',
         text: msg,
@@ -18,7 +18,7 @@ export function Warning(msg = "Something went wrong."){
     });
 }
 
-export function Success(msg = "The update is complete."){
+export function toastSuccess(msg = "The update is complete."){
     $.toast({
         heading: "Success",
         text: msg,

@@ -21,6 +21,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Deadline</th>
+                                <th scope="col">Done</th>
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
@@ -31,6 +32,11 @@
                                         <td><%=item?.name ?? nil%></td>
                                         <td><%=item?.description ?? nil%></td>
                                         <td><%= item?.deadline ? formatDate(item?.deadline) : nil%></td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input done-checkbox" data-id="<%=item.id%>" type="checkbox" value="" id="flexCheckDefault" <%= item?.done ? 'checked' : ''%>>
+                                            </div>
+                                        </td>
                                         <td>
                                             <button class="text-uppercase btn btn-light btn-sm p-1 me-2 edit-modal-form"  
                                                 type="button"

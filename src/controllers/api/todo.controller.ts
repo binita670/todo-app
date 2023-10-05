@@ -11,40 +11,48 @@ export class TodoController {
         this.service = new TodoService();
     }
 
-    async index(req: TypedQuery<Pick<Pagination, "page" | "limit" | "type">>, res: Response){
-        try{
+    async index(req: TypedQuery<Pick<Pagination, "page" | "limit" | "type">>, res: Response) {
+        try {
             const data = await this.service.findAll(req.query);
             res.status(200).send(data);
-        }catch(error: any){
+        } catch (error: any) {
             throw new Error(error);
         }
     }
 
-    async add(req: TypedRequest<CreateTodoDto>, res: Response){
-        try{
+    async add(req: TypedRequest<CreateTodoDto>, res: Response) {
+        try {
             const data = await this.service.add(req.body);
             return res.status(200).send(data);
-        }catch(error: any){
+        } catch (error: any) {
             throw new Error(error);
         }
     }
 
-    async update(req: TypedRequest<CreateTodoDto, IdParam>, res: Response){
-        try{
+    async update(req: TypedRequest<CreateTodoDto, IdParam>, res: Response) {
+        try {
             const data = await this.service.update(req.body, req.params.id);
             return res.status(200).send(data);
-        }catch(error: any){
+        } catch (error: any) {
             throw new Error(error);
         }
     }
 
-    async delete(req: Request, res: Response){
-        try{
+    async delete(req: Request, res: Response) {
+        try {
             await this.service.delete(req.params.id);
             return res.status(204).send("success");
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    }
+
+    async changeStatus(req: TypedRequest<CreateTodoDto, IdParam>, res: Response){
+        try{
+            const data = await this.service.changeStatus(req.params.id);
+            return res.status(200).send(data);
         }catch(error: any){
             throw new Error(error);
         }
     }
 }
-
