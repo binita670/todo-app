@@ -18,7 +18,7 @@ export class TodoService {
         let data: Todo[];
         let total = 0;
         if (type) {
-            const todoList = await this.getFilteredData(skip, limit, type);
+            const todoList = await this.getFilteredData(type);
             data = todoList.data;
             total = todoList.total;
         } else {
@@ -42,8 +42,8 @@ export class TodoService {
 
     async getData(skip: number, limit: number) {
         const [data, total] = await this.repository.findAndCount({
-            skip,
-            take: limit,
+            // skip,
+            // take: limit,
             order: {
                 id: "DESC"
             }
@@ -54,16 +54,19 @@ export class TodoService {
         };
     }
 
-    async getFilteredData(skip: number, limit: number, type: string) {
+    async getFilteredData(type: string) {
+        const whereCondition = { where: {} };
+        if(type === "done" || type === "up-coming"){
+            whereCondition.where = {
+                // deadline: type === "done" ? LessThan(new Date()) : MoreThan(new Date())
+                done: type === 'done' ? true : false
+            }
+        }
         const [data, total] = await this.repository.findAndCount({
-            skip,
-            take: limit,
             order: {
                 id: "DESC"
             },
-            where: {
-                deadline: type === "done" ? LessThan(new Date()) : MoreThan(new Date())
-            }
+            ...whereCondition
         });
         return {
             data,
@@ -73,7 +76,7 @@ export class TodoService {
 
     async add(data: CreateTodoDto) {
         let { name, description, deadline } = data;
-        deadline = moment(deadline, "YYYY-MM-DD").toDate();
+        deadline = moment(deadline, "YYYY-MM-DD HH:mm").toDate();
         const newTodoData = this.repository.create({ name, description, deadline });
         return this.repository.save(newTodoData);
     }
@@ -83,7 +86,7 @@ export class TodoService {
         const todoData = await this.findOrFail(id);
         todoData.name = name;
         todoData.description = description;
-        todoData.deadline = moment(deadline, "YYYY-MM-DD").toDate();
+        todoData.deadline = moment(deadline, "YYYY-MM-DD HH:mm").toDate();
         return this.repository.save(todoData);
     }
 

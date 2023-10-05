@@ -4,6 +4,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="d-flex justify-content-end">
+                            <%-include('./includes/filter-list.ejs')%>
                             <div class="p-3">
                                 <button class="btn btn-primary main-pg-btn btn-icon-text pull-right px-2"  
                                     type="button"
@@ -28,7 +29,7 @@
                             <tbody>
                                 <% if(data.length > 0){ sn = (pageNum-1) * pageLimit; data.forEach(function(item, index) { %>
                                     <tr>
-                                        <th scope="row">1</th>
+                                        <th><%= index + 1 %></th>
                                         <td><%=item?.name ?? nil%></td>
                                         <td><%=item?.description ?? nil%></td>
                                         <td><%= item?.deadline ? formatDate(item?.deadline) : nil%></td>
@@ -63,7 +64,7 @@
                                 <% } %>
                             </tbody>
                         </table>
-                        <div class="mb-3"><%- include ('../partials/pagination')%></div>
+                        <!-- <div class="mb-3"><%- include ('../partials/pagination')%></div> -->
                     </div>
                 </div>
             </div>

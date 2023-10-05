@@ -80,6 +80,22 @@ $(function(e) {
             type: 'PUT',
             success: (response) => {
                 toastSuccess("Status changed successfully.");
+                $(this).prop('checked', response.done);
+            },
+            error: (error) => {
+                toastError(formatError(error));
+            }
+        });
+    });
+
+    $('.filter-list').on('change', function(e) {
+        e.preventDefault();
+        const selectedType = $(this).children("option:selected").val();
+        $.ajax({
+            url:`/api/v1/todos?type=${selectedType}`,
+            type: 'GET',
+            success: (response) => {
+                toastSuccess("Status changed successfully.");
             },
             error: (error) => {
                 toastError(formatError(error));
