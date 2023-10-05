@@ -20,7 +20,6 @@ export class TodoController {
             const data = await this.service.findAll(req.query);
             res.render('layout/base', this.viewData(data));
         }catch(error: any){
-            console.log("🚀 ~ file: todo.controller.ts:9 ~ TodoController ~ index ~ error:", error)
             throw new Error(error);
         }
     }

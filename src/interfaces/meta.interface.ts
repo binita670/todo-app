@@ -3,6 +3,7 @@ export interface Pagination {
     page: number;
     limit: number;
     totalPage: number;
+    type?: string
 }
 
 export interface ApiMetaData {

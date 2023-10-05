@@ -1,13 +1,23 @@
 import { Request, Response } from "express";
 import { TodoService } from "../../services/todo.service";
 import { CreateTodoDto } from "../../dto";
-import { IdParam, TypedRequest } from "../../interfaces";
+import { IdParam, Pagination, TypedRequest } from "../../interfaces";
+import { TypedQuery } from "../../interfaces/typed-query.interface";
 
 export class TodoController {
     private service: TodoService;
 
     constructor() {
         this.service = new TodoService();
+    }
+
+    async index(req: TypedQuery<Pick<Pagination, "page" | "limit" | "type">>, res: Response){
+        try{
+            const data = await this.service.findAll(req.query);
+            res.status(200).send(data);
+        }catch(error: any){
+            throw new Error(error);
+        }
     }
 
     async add(req: TypedRequest<CreateTodoDto>, res: Response){

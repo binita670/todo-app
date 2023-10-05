@@ -2,7 +2,7 @@ import { CreateTodoDto } from "../dto";
 import { appDataSource } from "../database/database";
 import { Todo } from "../entities/todo.entity";
 import { TodoListInterface } from "../interfaces/todo.list.interface";
-import { Repository } from "typeorm";
+import { LessThan, Repository } from "typeorm";
 import { Pagination } from "../interfaces";
 import moment from 'moment';
 
@@ -12,16 +12,13 @@ export class TodoService {
         this.repository = appDataSource.getRepository(Todo);
     }
 
-    async findAll(query: Pick<Pagination, "page" | "limit">): Promise<TodoListInterface> {
-        const { page = 1, limit = 10} = query; 
+    async findAll(query: Pick<Pagination, "page" | "limit" | "type">): Promise<TodoListInterface> {
+        const { page = 1, limit = 10, type = null} = query; 
         const skip = (page - 1) * limit;
-        const [data, total] = await this.repository.findAndCount({
-            skip,
-            take: limit,
-            order: {
-                id: 'DESC'
-            },
-        });
+        if(type){
+            let { data = [], total = 0 } = await this.getFilteredData(skip, limit, type);
+        }
+        let { data = [], total = 0 } = await this.getData(skip, limit);
         let from = ((page - 1) * limit) + 1;
         let to = from + (data.length - 1);
         return { 
@@ -34,6 +31,37 @@ export class TodoService {
             from,
             to
         };
+    }
+
+    async getData(skip: number, limit: number){
+        const [data, total] = await this.repository.findAndCount({
+            skip,
+            take: limit,
+            order: {
+                id: 'DESC'
+            },
+        });
+        return {
+            data,
+            total
+        }
+    }
+
+    async getFilteredData(skip: number, limit: number, type: string){
+        const [data, total] = await this.repository.findAndCount({
+            skip,
+            take: limit,
+            order: {
+                id: 'DESC'
+            },
+            where: {
+                deadline: type === "done" ? LessThan(Date.now()) : GreaterThan(Date.now())
+            }
+        });
+        return {
+            data,
+            total
+        }
     }
 
     async add(data: CreateTodoDto){

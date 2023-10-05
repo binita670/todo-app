@@ -10,3 +10,7 @@ export interface TodoListInterface {
     to: number;
     pageCount: number;
 }
+
+export interface FilterTodoListInterface {
+    type: string
+}
