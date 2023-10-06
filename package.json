@@ -9,7 +9,7 @@
     "copy-views": "copyfiles -u 1 \"./src/views/**/*.ejs\" \"./dist\"",
     "dev": "npm run prebuild && concurrently \"tsc --watch\" \"nodemon ./dist/index.js\"",
     "typeorm": "cross-var node ./node_modules/typeorm/cli.js",
-    "prebuild": "tsc && npm run copy-views && npm run build:js",
+    "prebuild": "tsc && npm run copy-views && npm run build:js && npm run migration:run",
     "build": "node dist/index",
     "migration:create": "npm run typeorm migration:create ./src/database/migrations/$npm_config_name",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./src/database/database.ts",
