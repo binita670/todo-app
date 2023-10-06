@@ -1,0 +1,20 @@
+version: '3'
+services:
+  postgres_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=todo_app_auth
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=todo_app
+
+  todo-app:
+    build: .
+    restart: on-failure
+    ports:
+      - 5000:5000
+    command: sh -c "
+      npm run migration:run
+      && npm run build"
+    depends_on:
+      - postgres_db

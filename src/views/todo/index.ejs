@@ -27,7 +27,7 @@
                               </tr>
                             </thead>
                             <tbody id="todo-list">
-                                <% if(data.length > 0){ sn = (pageNum-1) * pageLimit; data.forEach(function(item, index) { %>
+                                <% if(data.length > 0){ data.forEach(function(item, index) { %>
                                     <tr>
                                         <th><%= index + 1 %></th>
                                         <td><%=item?.name ?? nil%></td>
@@ -45,7 +45,7 @@
                                                 data-bs-target="#confirmEditModal-<%=item?.id%>">
                                                 <i class="icofont-duotone icofont-apply"> </i>Edit
                                             </button>
-                                            <%- include ('./includes/edit-modal', {id: item?.id, name: item?.name, description: item?.description, deadline: formatDate(item?.deadline)}) %>
+                                            <%- include ('./includes/edit-modal', {id: item?.id, name: item?.name, description: item?.description, deadline: formatDate(item?.deadline, "YYYY/MM/DD HH:mm")}) %>
 
                                             <button type="button"
                                                     class="btn btn-danger btn-sm p-1"

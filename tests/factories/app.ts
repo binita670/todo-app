@@ -1,13 +1,10 @@
-import { DataSource } from 'typeorm';
-import { Server } from 'http';
-import { bootstrap } from '../../src/index';
-import { appDataSource } from '../../src/database/database';
+import { DataSource } from "typeorm";
+import { Server } from "http";
+import { bootstrap } from "../../src/index";
+import { appDataSource } from "../../src/database/database";
 
 export class AppFactory {
-    constructor(
-        public readonly appInstance: Server,
-        public readonly dbConnection: DataSource,
-    ) {}
+    constructor(public readonly appInstance: Server, public readonly dbConnection: DataSource) {}
 
     static async new() {
         const app = bootstrap();
@@ -22,17 +19,17 @@ export class AppFactory {
         if (this.appInstance) this.appInstance.close();
     }
 
-    async cleanDB() {
+    async cleanDB(options?: { dropDB: boolean }) {
         if (this.dbConnection.isInitialized) {
             const entities = this.dbConnection.entityMetadatas;
             for (const entity of entities) {
-                const queryRunner = this.dbConnection.manager.getRepository(
-                    entity.name
-                );
+                const queryRunner = this.dbConnection.manager.getRepository(entity.name);
                 // delete everything from table ignoring relations
-                await queryRunner.query(
-                    `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
-                );
+                await queryRunner.query(`TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`);
+            }
+            if (options?.dropDB) {
+                console.log('Dropping Database.............');
+                await this.dbConnection.dropDatabase();
             }
         }
     }

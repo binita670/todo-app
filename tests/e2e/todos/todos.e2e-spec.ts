@@ -16,7 +16,10 @@ describe('TodoController (e2e)', () => {
     });
 
     afterAll(async () => {
-        if (app) await app.close();
+        if (app) { 
+            await app.close();
+            await app.cleanDB({ dropDB: true });
+        }
     });
 
     it('/POST Add new item in the todo list', async () => {
