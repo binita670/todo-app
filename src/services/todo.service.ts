@@ -7,7 +7,7 @@ import { Pagination } from "../interfaces";
 import moment from "moment";
 
 export class TodoService {
-    private repository: Repository<Todo>;
+    repository: Repository<Todo>;
     constructor() {
         this.repository = appDataSource.getRepository(Todo);
     }

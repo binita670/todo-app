@@ -9,9 +9,9 @@ describe('App e2e', () => {
         app = await AppFactory.new();
     });
 
-    // afterEach(async () => {
-    //     if (app) await app.cleanDB();
-    // });
+    afterEach(async () => {
+        if (app) await app.cleanDB();
+    });
 
     afterAll(async () => {
         if (app) await app.close();
