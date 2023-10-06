@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"; 
 
 @Entity({
-   name: 'todo-list'
+   name: 'todos'
 }) 
 export class Todo {   
    @PrimaryGeneratedColumn() 
@@ -14,11 +14,14 @@ export class Todo {
    description: string; 
 
    @Column({nullable: false}) 
-   deadline: Date; 
+   deadline: Date;
+
+   @Column({nullable: false, default: false}) 
+   done: Boolean; 
 
    @Column() 
-   createdat: Date; 
+   createdAt: Date; 
 
    @Column() 
-   updatedat: Date; 
+   updatedAt: Date; 
 }

@@ -1,0 +1,13 @@
+{
+    "server": {
+      "port": 5000
+    },
+    "nodeEnv": "production",
+    "db": {
+      "host": "postgres_db",
+      "port": 5432,
+      "username": "postgres",
+      "password": "todo_app_auth",
+      "databaseName": "todo-app"
+    }
+  }
