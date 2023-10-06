@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { TodoService } from "../../services/todo.service";
 import { CreateTodoDto } from "../../dto";
-import { IdParam, Pagination, TypedRequest } from "../../interfaces";
+import { IdParam, TypedRequest } from "../../interfaces";
 import { TypedQuery } from "../../interfaces/typed-query.interface";
+import { FilterTodoListInterface } from "../../interfaces/todo.list.interface";
 
 export class TodoController {
     private service: TodoService;
@@ -11,7 +12,7 @@ export class TodoController {
         this.service = new TodoService();
     }
 
-    async index(req: TypedQuery<Pick<Pagination, "page" | "limit" | "type">>, res: Response) {
+    async index(req: TypedQuery<FilterTodoListInterface>, res: Response) {
         try {
             const data = await this.service.findAll(req.query);
             res.status(200).send(data);

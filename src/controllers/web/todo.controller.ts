@@ -1,8 +1,7 @@
 import { Response } from "express";
 import { TodoService } from "../../services/todo.service";
-import { TodoListInterface } from "../../interfaces/todo.list.interface";
+import { FilterTodoListInterface, TodoListInterface } from "../../interfaces/todo.list.interface";
 import { TypedQuery } from "../../interfaces/typed-query.interface";
-import { Pagination } from "../../interfaces";
 
 export class TodoController {
     private viewPage = '../todo';
@@ -14,7 +13,7 @@ export class TodoController {
         this.service = new TodoService();
     }
 
-    async index(req: TypedQuery<Pick<Pagination, "page" | "limit">>, res: Response){
+    async index(req: TypedQuery<FilterTodoListInterface>, res: Response){
         try{
             this.innerPage = this.viewPage + '/index';
             const data = await this.service.findAll(req.query);

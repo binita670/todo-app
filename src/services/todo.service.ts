@@ -1,9 +1,8 @@
 import { CreateTodoDto } from "../dto";
 import { appDataSource } from "../database/database";
 import { Todo } from "../entities/todo.entity";
-import { TodoListInterface } from "../interfaces/todo.list.interface";
-import { LessThan, Repository, MoreThan } from "typeorm";
-import { Pagination } from "../interfaces";
+import { FilterTodoListInterface, TodoListInterface } from "../interfaces/todo.list.interface";
+import { Repository } from "typeorm";
 import moment from "moment";
 
 export class TodoService {
@@ -12,66 +11,40 @@ export class TodoService {
         this.repository = appDataSource.getRepository(Todo);
     }
 
-    async findAll(query: Pick<Pagination, "page" | "limit" | "type">): Promise<TodoListInterface> {
-        const { page = 1, limit = 10, type = null } = query;
-        const skip = (page - 1) * limit;
+    async findAll(query: FilterTodoListInterface): Promise<TodoListInterface> {
+        const { type = null } = query;
         let data: Todo[];
-        let total = 0;
         if (type) {
-            const todoList = await this.getFilteredData(type);
-            data = todoList.data;
-            total = todoList.total;
+            data = await this.getFilteredData(type);
         } else {
-            const todoList = await this.getData(skip, limit);
-            data = todoList.data;
-            total = todoList.total;
+            data = await this.getData();
         }
-        let from = (page - 1) * limit + 1;
-        let to = from + (data.length - 1);
         return {
-            data,
-            total,
-            pageNum: page,
-            pageLimit: limit,
-            currentPage: page,
-            pageCount: Math.ceil(total / limit),
-            from,
-            to
+            data
         };
     }
 
-    async getData(skip: number, limit: number) {
-        const [data, total] = await this.repository.findAndCount({
-            // skip,
-            // take: limit,
+    async getData() {
+        return this.repository.find({
             order: {
                 id: "DESC"
             }
         });
-        return {
-            data,
-            total
-        };
     }
 
     async getFilteredData(type: string) {
         const whereCondition = { where: {} };
         if(type === "done" || type === "up-coming"){
             whereCondition.where = {
-                // deadline: type === "done" ? LessThan(new Date()) : MoreThan(new Date())
                 done: type === 'done' ? true : false
             }
         }
-        const [data, total] = await this.repository.findAndCount({
+        return this.repository.find({
             order: {
                 id: "DESC"
             },
             ...whereCondition
         });
-        return {
-            data,
-            total
-        };
     }
 
     async add(data: CreateTodoDto) {
