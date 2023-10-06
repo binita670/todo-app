@@ -1,7 +1,8 @@
 import { Response } from "express";
 import { TodoService } from "../../services/todo.service";
-import { FilterTodoListInterface, TodoListInterface } from "../../interfaces/todo.list.interface";
+import { FilterTodoListInterface } from "../../interfaces/todo-list.interface";
 import { TypedQuery } from "../../interfaces/typed-query.interface";
+import { Todo } from "../../entities/todo.entity";
 
 export class TodoController {
     private viewPage = '../todo';
@@ -23,7 +24,7 @@ export class TodoController {
         }
     }
 
-    viewData(data: TodoListInterface) {
+    viewData(data: Todo[]) {
         return {
           ...data,
           innerPage: this.innerPage,

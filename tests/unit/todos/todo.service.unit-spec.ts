@@ -2,7 +2,7 @@ import { CreateTodoDto, TodoItemDto } from '../../../src/dto';
 import { TodoService } from '../../../src/services/todo.service';
 
 const mockTodosRepository = () => ({
-    findOneOrFail: jest.fn(),
+    findOne: jest.fn(),
     find: jest.fn(),
     create: jest.fn(),
     save: jest.fn(),
@@ -137,9 +137,9 @@ describe('TodoService (unit)', () => {
             deadline: new Date(),
           };
 
-          todoService.repository.findOneOrFail = jest.fn().mockResolvedValue(todoData);
+          todoService.repository.findOne = jest.fn().mockResolvedValue(todoData);
           todoService.repository.save = jest.fn().mockResolvedValue(todoData);
-          todoService.findOrFail = jest.fn().mockResolvedValue(todoData);
+          todoService.findOne = jest.fn().mockResolvedValue(todoData);
           mockMoment.toDate.mockReturnValue(data.deadline);
           
           const result = await todoService.update(data, todoData.id);
@@ -153,45 +153,45 @@ describe('TodoService (unit)', () => {
         });
     });
 
-    describe('findOrFail', () => {
+    describe('findOne', () => {
         it('should return the data when found', async () => {
-          todoService.repository.findOneOrFail = jest.fn().mockResolvedValue(todoData);
-          const result = await todoService.findOrFail(id);
-          expect(todoService.repository.findOneOrFail).toHaveBeenCalledWith({ where: { id: Number(id) } });
+          todoService.repository.findOne = jest.fn().mockResolvedValue(todoData);
+          const result = await todoService.findOne(id);
+          expect(todoService.repository.findOne).toHaveBeenCalledWith({ where: { id: Number(id) } });
           expect(result).toEqual(todoData);
         });
     
         it('should throw an error when data is not found', async () => {
-          todoService.repository.findOneOrFail = jest.fn().mockRejectedValue(new Error('Todo data not found.'));
-          await expect(todoService.findOrFail(id)).rejects.toThrow('Todo data not found.');
-          expect(todoService.repository.findOneOrFail).toHaveBeenCalledWith({ where: { id: Number(id) } });
+          todoService.repository.findOne = jest.fn().mockRejectedValue(new Error('Todo data not found.'));
+          await expect(todoService.findOne(id)).rejects.toThrow('Todo data not found.');
+          expect(todoService.repository.findOne).toHaveBeenCalledWith({ where: { id: Number(id) } });
         });
     });
 
     describe('delete todo item', () => {
         it('should delete the todo item', async () => {
-          todoService.findOrFail = jest.fn().mockResolvedValue(todoData);
+          todoService.findOne = jest.fn().mockResolvedValue(todoData);
           todoService.repository.remove = jest.fn().mockResolvedValue(todoData);
           const result = await todoService.delete(id);
-          expect(todoService.findOrFail).toHaveBeenCalledWith(id);
+          expect(todoService.findOne).toHaveBeenCalledWith(id);
           expect(todoService.repository.remove).toHaveBeenCalledWith(todoData);
           expect(result).toBeTruthy();
         });
     
         it('should throw an error when data is not found', async () => {
-          todoService.findOrFail = jest.fn().mockRejectedValue(new Error('Todo data not found.'));
+          todoService.findOne = jest.fn().mockRejectedValue(new Error('Todo data not found.'));
           await expect(todoService.delete(id)).rejects.toThrow('Todo data not found.');
-          expect(todoService.findOrFail).toHaveBeenCalledWith(id);
+          expect(todoService.findOne).toHaveBeenCalledWith(id);
           expect(todoService.repository.remove).not.toHaveBeenCalled();
         });
     });
 
     describe('changeStatus', () => {
         it('should toggle the status and return the updated data', async () => {
-          todoService.findOrFail = jest.fn().mockResolvedValue(todoData);
+          todoService.findOne = jest.fn().mockResolvedValue(todoData);
           todoService.repository.save = jest.fn().mockResolvedValue(todoData);
           const result = await todoService.changeStatus(id);
-          expect(todoService.findOrFail).toHaveBeenCalledWith(id);
+          expect(todoService.findOne).toHaveBeenCalledWith(id);
           const todoStatusData = {
             ...todoData,
             done: false
@@ -201,9 +201,9 @@ describe('TodoService (unit)', () => {
         });
     
         it('should throw an error when data is not found', async () => {
-          todoService.findOrFail = jest.fn().mockRejectedValue(new Error('Todo data not found.'));
+          todoService.findOne = jest.fn().mockRejectedValue(new Error('Todo data not found.'));
           await expect(todoService.delete(id)).rejects.toThrow('Todo data not found.');
-          expect(todoService.findOrFail).toHaveBeenCalledWith(id);
+          expect(todoService.findOne).toHaveBeenCalledWith(id);
           expect(todoService.repository.save).not.toHaveBeenCalled();
         });
       });

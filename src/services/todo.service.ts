@@ -1,9 +1,10 @@
 import { CreateTodoDto } from "../dto";
 import { appDataSource } from "../database/database";
 import { Todo } from "../entities/todo.entity";
-import { FilterTodoListInterface, TodoListInterface } from "../interfaces/todo.list.interface";
+import { FilterTodoListInterface } from "../interfaces/todo-list.interface";
 import { Repository } from "typeorm";
 import moment from "moment";
+import { AppException } from "../exceptions";
 
 export class TodoService {
     repository: Repository<Todo>;
@@ -11,17 +12,12 @@ export class TodoService {
         this.repository = appDataSource.getRepository(Todo);
     }
 
-    async findAll(query: Partial<FilterTodoListInterface>): Promise<TodoListInterface> {
+    async findAll(query: Partial<FilterTodoListInterface>): Promise<Todo[]> {
         const { type = null } = query;
-        let data: Todo[];
         if (type) {
-            data = await this.getFilteredData(type);
-        } else {
-            data = await this.getData();
+            return this.getFilteredData(type);
         }
-        return {
-            data
-        };
+        return this.getData();
     }
 
     async getData() {
@@ -56,7 +52,7 @@ export class TodoService {
 
     async update(data: CreateTodoDto, id: string) {
         const { name, description, deadline } = data;
-        const todoData = await this.findOrFail(id);
+        const todoData = await this.findOne(id);
         todoData.name = name;
         todoData.description = description;
         todoData.deadline = moment(deadline, "YYYY-MM-DD HH:mm").toDate();
@@ -64,20 +60,20 @@ export class TodoService {
     }
 
     async delete(id: string) {
-        const todoData = await this.findOrFail(id);
+        const todoData = await this.findOne(id);
         return this.repository.remove(todoData);
     }
 
-    async findOrFail(id: string) {
-        const data = await this.repository.findOneOrFail({ where: { id: Number(id) } });
+    async findOne(id: string) {
+        const data = await this.repository.findOne({ where: { id: Number(id) } });
         if (!data) {
-            throw new Error("Todo data not found.");
+            throw new AppException(404, "Todo data not found.");
         }
         return data;
     }
 
     async changeStatus(id: string){
-        const todoData = await this.findOrFail(id);
+        const todoData = await this.findOne(id);
         todoData.done = !todoData?.done;
         return this.repository.save(todoData);
     }
