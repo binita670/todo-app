@@ -8,6 +8,6 @@
       "port": 5432,
       "username": "postgres",
       "password": "todo_app_auth",
-      "databaseName": "todo_app"
+      "databaseName": "todo-app"
     }
   }
