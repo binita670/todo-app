@@ -12,6 +12,9 @@ COPY . .
 
 COPY ./config/production.example.json ./config/production.json
 
+EXPOSE 5000
+
 CMD ["npm", "run", "build"]
+
 
 
