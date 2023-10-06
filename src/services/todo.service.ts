@@ -11,7 +11,7 @@ export class TodoService {
         this.repository = appDataSource.getRepository(Todo);
     }
 
-    async findAll(query: FilterTodoListInterface): Promise<TodoListInterface> {
+    async findAll(query: Partial<FilterTodoListInterface>): Promise<TodoListInterface> {
         const { type = null } = query;
         let data: Todo[];
         if (type) {

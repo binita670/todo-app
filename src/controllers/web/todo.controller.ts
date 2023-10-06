@@ -13,7 +13,7 @@ export class TodoController {
         this.service = new TodoService();
     }
 
-    async index(req: TypedQuery<FilterTodoListInterface>, res: Response){
+    async index(req: TypedQuery<Partial<FilterTodoListInterface>>, res: Response){
         try{
             this.innerPage = this.viewPage + '/index';
             const data = await this.service.findAll(req.query);

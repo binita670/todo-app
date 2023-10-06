@@ -3,7 +3,7 @@ import { TodoService } from '../../../src/services/todo.service';
 
 const mockTodosRepository = () => ({
     findOneOrFail: jest.fn(),
-    findAndCount: jest.fn(),
+    find: jest.fn(),
     create: jest.fn(),
     save: jest.fn(),
     remove: jest.fn()
@@ -45,6 +45,77 @@ describe('TodoService (unit)', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
+    });
+
+    describe('findAll', () => {
+        const mockFilteredData = [{ ...todoData, done: true }];
+        const mockData = [{ id: '2', createTodoDto, done: false}];
+
+        it('should return filtered data when type is provided', async () => {
+          const query = { type: 'done' };
+          todoService.getFilteredData = jest.fn().mockResolvedValue(mockFilteredData);
+          todoService.getData = jest.fn().mockResolvedValue(mockFilteredData);
+          const result = await todoService.findAll(query);
+          expect(todoService.getFilteredData).toHaveBeenCalledWith(query.type);
+          expect(todoService.getData).not.toHaveBeenCalled();
+          expect(result).toEqual({ data: mockFilteredData });
+        });
+    
+        it('should return unfiltered data when type is not provided', async () => {
+          const query = {};
+          todoService.getData = jest.fn().mockResolvedValue(mockData);
+          todoService.getFilteredData = jest.fn().mockResolvedValue(mockData);
+          const result = await todoService.findAll(query);
+          expect(todoService.getData).toHaveBeenCalled();
+          expect(todoService.getFilteredData).not.toHaveBeenCalled();
+          expect(result).toEqual({ data: mockData });
+        });
+    });
+
+    describe('getData', () => {
+        const mockData = [{ ...todoData, done: true }];
+        it('should return data in descending order of ID', async () => {
+          todoService.repository.find = jest.fn().mockResolvedValue(mockData);
+          const result = await todoService.getData();
+          expect(todoService.repository.find).toHaveBeenCalledWith({
+            order: {
+              id: 'DESC',
+            },
+          });
+          expect(result).toEqual(mockData);
+        });
+    });
+
+    describe('getFilteredData', () => {
+        const mockData = [{ ...todoData, done: true }];
+
+        it('should return filtered data based on the provided type', async () => {
+          const type = 'done';
+          todoService.repository.find = jest.fn().mockResolvedValue(mockData);
+          const result = await todoService.getFilteredData(type);
+          expect(todoService.repository.find).toHaveBeenCalledWith({
+            order: {
+              id: 'DESC',
+            },
+            where: {
+              done: true,
+            },
+          });
+          expect(result).toEqual(mockData);
+        });
+    
+        it('should return unfiltered data when type is not "done" or "up-coming"', async () => {
+          const type = 'invalid';
+          todoService.repository.find = jest.fn().mockResolvedValue(mockData);
+          const result = await todoService.getFilteredData(type);
+          expect(todoService.repository.find).toHaveBeenCalledWith({
+            order: {
+              id: 'DESC',
+            },
+            where: {}
+          });
+          expect(result).toEqual(mockData);
+        });
     });
 
     describe('add item to todo list', () => {
