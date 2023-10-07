@@ -1,5 +1,5 @@
 export interface ApiMetaData {
-    api: {
-        version: number
-    }
+  api: {
+    version: number;
+  };
 }
