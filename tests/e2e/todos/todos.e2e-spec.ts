@@ -28,7 +28,7 @@ describe('TodoController (e2e)', () => {
     });
 
     async function addItem(){
-        const itemPayload: CreateTodoDto= {
+        const itemPayload= {
             name: 'test',
             description:'test',
             deadline: moment().add(10, 'days').format("YYYY/MM/DD HH:mm")
@@ -50,7 +50,7 @@ describe('TodoController (e2e)', () => {
 
     it('/UPDATE Update item from the todo list', async () => {
         const item = await addItem();
-        const updatedPayload: CreateTodoDto = {
+        const updatedPayload = {
             name: 'test new',
             description:'test new',
             deadline: moment().add(10, 'days').format("YYYY/MM/DD HH:mm")
