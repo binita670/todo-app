@@ -26,7 +26,7 @@ export class TodoController {
 
     viewData(data: Todo[]) {
         return {
-          ...data,
+          data,
           innerPage: this.innerPage,
           url: this.url
         };

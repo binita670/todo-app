@@ -55,7 +55,7 @@ describe('TodoController (e2e)', () => {
             deadline: new Date()
         };
         const response = await request(app.appInstance)
-            .put(`${common.apiPrefix}/todos/${item?.body?.id}`)
+            .put(`${common.apiPrefix}/todos/${item?.body?.data?.id}`)
             .set('Accept', 'application/json')
             .send(updatedPayload);
             expect(response.statusCode).toEqual(200);
@@ -64,7 +64,7 @@ describe('TodoController (e2e)', () => {
     it('/DELETE Delete item from the todo list', async () => {
         const item = await addItem();
         const response = await request(app.appInstance)
-            .delete(`${common.apiPrefix}/todos/${item?.body?.id}`)
+            .delete(`${common.apiPrefix}/todos/${item?.body?.data?.id}`)
             .set('Accept', 'application/json')
             expect(response.statusCode).toEqual(204);
     });

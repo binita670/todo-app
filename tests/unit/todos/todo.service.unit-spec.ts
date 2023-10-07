@@ -58,7 +58,7 @@ describe('TodoService (unit)', () => {
           const result = await todoService.findAll(query);
           expect(todoService.getFilteredData).toHaveBeenCalledWith(query.type);
           expect(todoService.getData).not.toHaveBeenCalled();
-          expect(result).toEqual({ data: mockFilteredData });
+          expect(result).toEqual(mockFilteredData);
         });
     
         it('should return unfiltered data when type is not provided', async () => {
@@ -68,7 +68,7 @@ describe('TodoService (unit)', () => {
           const result = await todoService.findAll(query);
           expect(todoService.getData).toHaveBeenCalled();
           expect(todoService.getFilteredData).not.toHaveBeenCalled();
-          expect(result).toEqual({ data: mockData });
+          expect(result).toEqual(mockData);
         });
     });
 
