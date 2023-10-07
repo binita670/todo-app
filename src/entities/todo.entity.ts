@@ -1,27 +1,27 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"; 
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity({
-   name: 'todos'
-}) 
-export class Todo {   
-   @PrimaryGeneratedColumn() 
-   id: number; 
-   
-   @Column({nullable: false}) 
-   name: string; 
-   
-   @Column({nullable: false}) 
-   description: string; 
+  name: "todos",
+})
+export class Todo {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-   @Column({nullable: false}) 
-   deadline: Date;
+  @Column({ nullable: false })
+  name: string;
 
-   @Column({nullable: false, default: false}) 
-   done: Boolean; 
+  @Column({ nullable: false })
+  description: string;
 
-   @Column() 
-   createdAt: Date; 
+  @Column({ nullable: false })
+  deadline: Date;
 
-   @Column() 
-   updatedAt: Date; 
+  @Column({ nullable: false, default: false })
+  done: Boolean;
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
 }

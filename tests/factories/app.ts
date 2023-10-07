@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import { Server } from "http";
 import { bootstrap } from "../../src/index";
-import { appDataSource } from "../../src/database/database";
+import { appDataSource } from "../../src/database/data-source";
 
 export class AppFactory {
     constructor(public readonly appInstance: Server, public readonly dbConnection: DataSource) {}

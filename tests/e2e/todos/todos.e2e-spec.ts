@@ -1,7 +1,8 @@
 import request from 'supertest';
 import { AppFactory } from '../../factories/app';
-import { CreateTodoDto } from '../../../src/dto';
 import { common } from '../../../src/constants';
+import moment from 'moment';
+import { CreateTodoDto } from '../../../src/dto';
 
 describe('TodoController (e2e)', () => {
     jest.setTimeout(5000);
@@ -27,10 +28,10 @@ describe('TodoController (e2e)', () => {
     });
 
     async function addItem(){
-        const itemPayload: CreateTodoDto = {
+        const itemPayload: CreateTodoDto= {
             name: 'test',
             description:'test',
-            deadline: new Date()
+            deadline: moment().add(10, 'days').format("YYYY/MM/DD HH:mm")
         };
         const response = await request(app.appInstance)
             .post(`${common.apiPrefix}/todos`)
@@ -52,7 +53,7 @@ describe('TodoController (e2e)', () => {
         const updatedPayload: CreateTodoDto = {
             name: 'test new',
             description:'test new',
-            deadline: new Date()
+            deadline: moment().add(10, 'days').format("YYYY/MM/DD HH:mm")
         };
         const response = await request(app.appInstance)
             .put(`${common.apiPrefix}/todos/${item?.body?.data?.id}`)

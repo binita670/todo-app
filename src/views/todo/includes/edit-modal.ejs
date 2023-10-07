@@ -22,7 +22,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="deadline">Deadline</label>
                         <span style="color: red">*</span>
-                        <input type="text" class="form-control datetimepicker" name="deadline"  value="<%=deadline%>" required>
+                        <input type="text" class="form-control datetimepicker" name="deadline"  value="<%=deadline%>" required autocomplete="off">
                     </div>
                 </div>
 
@@ -34,8 +34,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-   $('#datetime').datetimepicker();
-</script>

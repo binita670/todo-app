@@ -1,9 +1,9 @@
 import { Todo } from "../entities/todo.entity";
 
 export interface TodoListInterface {
-    data: Todo[];
+  data: Todo[];
 }
 
 export interface FilterTodoListInterface {
-    type: string
+  type: string;
 }
