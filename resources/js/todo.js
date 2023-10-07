@@ -1,11 +1,12 @@
+import { initDateTimePicker } from "./datetimepicker";
 import { buildTodoElBuilder, emptyListBuilder } from "./element-builder";
 import { toastError, toastSuccess } from "./toast";
 
 const formatError = (error) => {
     if (error.status === 422) {
-        return error.responseJSON.errors.map((err) => err.msg).join("\n");
+        return error?.responseJSON?.errors?.map((err) => err?.msg).join("\n");
     }
-    return error.message;
+    return error?.responseJSON?.error || error?.message;
 };
 
 const buildTodoList = (todoList) => {
@@ -31,7 +32,9 @@ $(function (e) {
         $.ajax({
             url: "/api/v1/todos",
             type: "POST",
-            contentType: "application/json",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             data: JSON.stringify({
                 name,
                 description,
@@ -57,7 +60,9 @@ $(function (e) {
         $.ajax({
             url: `/api/v1/todos/${id}`,
             type: "PUT",
-            contentType: "application/json",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             data: JSON.stringify({
                 name,
                 description,
@@ -80,6 +85,9 @@ $(function (e) {
         $.ajax({
             url: `/api/v1/todos/${id}`,
             type: "DELETE",
+            headers: {
+                Accept: 'application/json'
+            },
             success: (_response) => {
                 toastSuccess("Item deleted successfully.");
                 clearModalForm(`confirmDeleteModal-${id}`);
@@ -94,16 +102,22 @@ $(function (e) {
     $(document).on("click", ".done-checkbox", function (e) {
         e.preventDefault();
         const id = $(this).data("id");
+        $(this).prop('disabled', true);
         $.ajax({
             url: `/api/v1/todos/change-status/${id}`,
             type: "PUT",
+            headers: {
+                Accept: 'application/json'
+            },
             success: (response) => {
                 toastSuccess("Status changed successfully.");
                 $(this).prop("checked", response.done);
                 $(".filter-list").trigger("change");
+                $(this).prop('disabled', false);
             },
             error: (error) => {
                 toastError(formatError(error));
+                $(this).prop('disabled', false);
             }
         });
     });
@@ -114,8 +128,12 @@ $(function (e) {
         $.ajax({
             url: `/api/v1/todos?type=${selectedType}`,
             type: "GET",
+            headers: {
+                Accept: 'application/json'
+            },
             success: (response) => {
                 buildTodoList(response.data);
+                initDateTimePicker();
             },
             error: (error) => {
                 toastError(formatError(error));

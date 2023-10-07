@@ -3,15 +3,15 @@ import { validationResult } from "express-validator";
 import { meta } from "../constants";
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        if (req.headers["content-type"] === "application/json") {
-            return res.status(422).json({
-                meta: meta,
-                errors: errors.array()
-            });
-        }
-        return res.redirect("back");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    if (req.headers["content-type"] === "application/json") {
+      return res.status(422).json({
+        meta: meta,
+        errors: errors.array(),
+      });
     }
-    return next();
+    return res.redirect("back");
+  }
+  return next();
 };

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { CreateTodoDto, TodoItemDto } from '../../../src/dto';
 import { TodoService } from '../../../src/services/todo.service';
 
@@ -12,7 +13,7 @@ const mockTodosRepository = () => ({
 const mockItem = {
     name: 'Todo 1',
     description: 'This is simple todo.',
-    deadline: new Date()
+    deadline: moment().add(10, 'days').toDate()
 };
 
 const mockMoment = {
@@ -20,8 +21,8 @@ const mockMoment = {
 };
   
 describe('TodoService (unit)', () => {
-    let createTodoDto: CreateTodoDto;
-    let todoData: TodoItemDto;
+    let createTodoDto: any;
+    let todoData: any;
     let todoService: TodoService;
     const id = '1';
 
@@ -29,7 +30,7 @@ describe('TodoService (unit)', () => {
         createTodoDto = {
             name: mockItem.name,
             description: mockItem.description,
-            deadline: mockItem.deadline,
+            deadline: mockItem.deadline
         };
 
         todoData = {
@@ -134,7 +135,7 @@ describe('TodoService (unit)', () => {
           const data = {
             name: 'Updated Todo',
             description: 'Updated description',
-            deadline: new Date(),
+            deadline: moment().add(10,'days').toDate(),
           };
 
           todoService.repository.findOne = jest.fn().mockResolvedValue(todoData);
