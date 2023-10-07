@@ -17,9 +17,7 @@ class ExpressLoader {
       res.locals.query = req.query;
       res.locals.url = req.url;
       res.locals.formatDate = (dateTime: string, format?: string) =>
-        moment(dateTime)
-          .tz("Asia/Kathmandu")
-          .format(format || "MMM Do YYYY, h:mm:ss a");
+        moment(dateTime).format(format || "MMM Do YYYY, h:mm:ss a");
       next();
     });
     routes(app);
