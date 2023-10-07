@@ -3,7 +3,7 @@ import cors from "cors";
 import path from "path";
 import methodOverride from "method-override";
 import { routes } from "../routes";
-import moment from "moment";
+import moment from "moment-timezone";
 
 class ExpressLoader {
     public init(app: Express) {
@@ -16,7 +16,7 @@ class ExpressLoader {
         app.use(async (req: Request, res: Response, next: NextFunction) => {
             res.locals.query = req.query;
             res.locals.url = req.url;
-            res.locals.formatDate = (dateTime: string, format?: string) => moment(dateTime).format(format || "MMM Do YYYY, h:mm:ss a");
+            res.locals.formatDate = (dateTime: string, format?: string) => moment(dateTime).tz('Asia/Kathmandu').format(format || "MMM Do YYYY, h:mm:ss a");
             next();
         });
         routes(app);
