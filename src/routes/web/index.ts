@@ -1,7 +1,5 @@
-import express from 'express';
-export const webRouter  = express.Router();
-import { todoRouter } from './todo';
+import express from "express";
+export const webRouter = express.Router();
+import { todoRouter } from "./todo";
 
-webRouter.use('/', todoRouter);
-
-
+webRouter.use("/", todoRouter);

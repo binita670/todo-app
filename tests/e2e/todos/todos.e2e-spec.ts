@@ -1,7 +1,8 @@
 import request from 'supertest';
 import { AppFactory } from '../../factories/app';
-import { CreateTodoDto } from '../../../src/dto';
 import { common } from '../../../src/constants';
+import moment from 'moment';
+import { CreateTodoDto } from '../../../src/dto';
 
 describe('TodoController (e2e)', () => {
     jest.setTimeout(5000);
@@ -27,10 +28,10 @@ describe('TodoController (e2e)', () => {
     });
 
     async function addItem(){
-        const itemPayload: CreateTodoDto = {
+        const itemPayload= {
             name: 'test',
             description:'test',
-            deadline: new Date()
+            deadline: moment().add(10, 'days').format("YYYY/MM/DD HH:mm")
         };
         const response = await request(app.appInstance)
             .post(`${common.apiPrefix}/todos`)
@@ -49,13 +50,13 @@ describe('TodoController (e2e)', () => {
 
     it('/UPDATE Update item from the todo list', async () => {
         const item = await addItem();
-        const updatedPayload: CreateTodoDto = {
+        const updatedPayload = {
             name: 'test new',
             description:'test new',
-            deadline: new Date()
+            deadline: moment().add(10, 'days').format("YYYY/MM/DD HH:mm")
         };
         const response = await request(app.appInstance)
-            .put(`${common.apiPrefix}/todos/${item?.body?.id}`)
+            .put(`${common.apiPrefix}/todos/${item?.body?.data?.id}`)
             .set('Accept', 'application/json')
             .send(updatedPayload);
             expect(response.statusCode).toEqual(200);
@@ -64,7 +65,7 @@ describe('TodoController (e2e)', () => {
     it('/DELETE Delete item from the todo list', async () => {
         const item = await addItem();
         const response = await request(app.appInstance)
-            .delete(`${common.apiPrefix}/todos/${item?.body?.id}`)
+            .delete(`${common.apiPrefix}/todos/${item?.body?.data?.id}`)
             .set('Accept', 'application/json')
             expect(response.statusCode).toEqual(204);
     });

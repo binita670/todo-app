@@ -1,15 +1,16 @@
-import config from 'config';
-import { Express } from 'express';
-import server from './server';
-import './database/database';
+import config from "config";
+import { Express } from "express";
+import server from "./server";
+import "./database/database";
 
 export function bootstrap() {
-    const app: Express = server();
-    return app.listen(config.get('server.port'), () => {
-        console.log(`Express running at port: ${config.get('server.port')}`);
-    });
+  const app: Express = server();
+  return app.listen(config.get("server.port"), () => {
+    /* eslint-disable */
+    console.log(`Express running at port: ${config.get("server.port")}`);
+  });
 }
 
-if (process.env.NODE_ENV !== 'test') {
-    bootstrap();
+if (process.env.NODE_ENV !== "test") {
+  bootstrap();
 }
