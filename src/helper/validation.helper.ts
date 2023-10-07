@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 export const required = (attribute: string, value: string) => {
   let error = false;
@@ -27,14 +27,14 @@ export const checkMaxLength = (
 
 export const validateDateTimeFormat = (
   dateTime: string,
-  format = ['YYYY/MM/DD HH:mm']
+  format = ["YYYY/MM/DD HH:mm"],
 ) => {
   if (
     dateTime &&
-    dateTime !== '' &&
+    dateTime !== "" &&
     !moment(dateTime, format, true).isValid()
   ) {
     throw new Error(`Invalid datetime format`);
   }
   return true;
-}
+};

@@ -54,8 +54,8 @@ export class TodoService {
     return this.repository.save(newTodoData);
   }
 
-  validateDeadlineDate(dateTime: Date){
-    if(moment(dateTime, "YYYY-MM-DD HH:mm").isBefore(moment())){
+  validateDeadlineDate(dateTime: Date) {
+    if (moment(dateTime, "YYYY-MM-DD HH:mm").isBefore(moment())) {
       throw new Error("Deadline date must not be previous date.");
     }
   }

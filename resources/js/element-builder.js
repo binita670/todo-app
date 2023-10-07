@@ -68,7 +68,7 @@ export const editModalFormBuilder = (todo) => `
                     <div class="mb-3">
                         <label class="form-label" for="deadline">Deadline</label>
                         <span style="color: red">*</span>
-                        <input type="text" class="form-control" id="datetime" name="deadline"  value="${moment(todo.deadline).format('YYYY/MM/DD HH:mm')}" required>
+                        <input type="text" class="form-control datetimepicker" name="deadline"  value="${moment(todo.deadline).format('YYYY/MM/DD HH:mm')}" required>
                     </div>
                 </div>
                 <div class="modal-footer">

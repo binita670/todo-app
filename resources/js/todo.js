@@ -1,3 +1,4 @@
+import { initDateTimePicker } from "./datetimepicker";
 import { buildTodoElBuilder, emptyListBuilder } from "./element-builder";
 import { toastError, toastSuccess } from "./toast";
 
@@ -132,6 +133,7 @@ $(function (e) {
             },
             success: (response) => {
                 buildTodoList(response.data);
+                initDateTimePicker();
             },
             error: (error) => {
                 toastError(formatError(error));

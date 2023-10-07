@@ -8,8 +8,9 @@ export const globalExceptionHandler = (
   error: AppException,
   req: Request,
   res: Response,
-  next: NextFunction
-  ) => {
+  /* eslint-disable */
+  next: NextFunction,
+) => {
   if (
     req.headers["content-type"] === "application/json" ||
     req.headers["accept"] === "application/json"
