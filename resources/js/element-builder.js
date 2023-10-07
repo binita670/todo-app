@@ -10,7 +10,7 @@ export const buildTodoElBuilder = (todo, index) => `
     <th>${index + 1}</th>
     <td>${todo.name}</td>
     <td>${todo.description}</td>
-    <td>${moment(todo.deadline).format('MMM Do YYYY, h:mm:ss a')}</td>
+    <td>${moment(todo.deadline).tz('Asia/Kathmandu').format('MMM Do YYYY, h:mm:ss a')}</td>
     <td>
         <div class="form-check">
             <input 
@@ -68,7 +68,7 @@ export const editModalFormBuilder = (todo) => `
                     <div class="mb-3">
                         <label class="form-label" for="deadline">Deadline</label>
                         <span style="color: red">*</span>
-                        <input type="text" class="form-control datetimepicker" name="deadline"  value="${moment(todo.deadline).format('YYYY/MM/DD HH:mm')}" required>
+                        <input type="text" class="form-control datetimepicker" name="deadline"  value="${moment(todo.deadline).tz('Asia/Kathmandu').format('YYYY/MM/DD HH:mm')}" required>
                     </div>
                 </div>
                 <div class="modal-footer">
